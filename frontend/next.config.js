@@ -1,7 +1,8 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    transpilePackages: ['bootstrap']
+    transpilePackages: ['bootstrap'],
+    output: 'standalone',
 };
 
 module.exports = nextConfig;
