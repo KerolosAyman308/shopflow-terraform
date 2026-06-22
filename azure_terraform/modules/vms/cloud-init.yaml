@@ -69,7 +69,7 @@ write_files:
 
       cat << EOF > /tmp/frontend/.env
       NEXT_PUBLIC_API_URL=http://${load_balancer_ip}:8000
-      NEXT_PUBLIC_STORE_NAME=Our store
+      NEXT_PUBLIC_STORE_NAME=Koko Shop
       NEXT_PUBLIC_AFFILIATE_COMMISSION_PCT=15
       EOF
 

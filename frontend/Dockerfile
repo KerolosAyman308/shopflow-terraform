@@ -7,6 +7,16 @@ COPY package.json package-lock.json* ./
 RUN npm ci
 
 COPY . .
+
+ARG NEXT_PUBLIC_STORE_NAME="__STORE_NAME_PLACEHOLDER__"
+ENV NEXT_PUBLIC_STORE_NAME=$NEXT_PUBLIC_STORE_NAME
+
+ARG NEXT_PUBLIC_AFFILIATE_COMMISSION_PCT="__COMMISSION_PLACEHOLDER__"
+ENV NEXT_PUBLIC_AFFILIATE_COMMISSION_PCT=$NEXT_PUBLIC_AFFILIATE_COMMISSION_PCT
+
+ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID="__GOOGLE_ID_PLACEHOLDER__"
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=$NEXT_PUBLIC_GOOGLE_CLIENT_ID
+
 RUN npm run build
 
 FROM node:20-alpine AS runner
@@ -16,12 +26,14 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 COPY --from=builder /app/public ./public
-
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+
+COPY entrypoint.sh ./
+RUN chmod +x ./entrypoint.sh
 
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "server.js"]
+CMD ["./entrypoint.sh"]
