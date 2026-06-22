@@ -8,6 +8,9 @@ on:
         types: 
             - synchronize
             - opened
+        paths: 
+          - ./frontend
+          - ./backend
 
 jobs:
     push_backend:
