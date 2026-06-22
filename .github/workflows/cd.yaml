@@ -35,8 +35,7 @@ jobs:
         run: terraform init -backend-config="storage_account_name=${{ secrets.TF_STORAGE_ACCOUNT }}" -backend-config="access_key=${{ secrets.TF_STORAGE_ACCOUNT_KEY }}"
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan -backend-config="storage_account_name=${{ secrets.TF_STORAGE_ACCOUNT }}" -backend-config="access_key=${{ secrets.TF_STORAGE_ACCOUNT_KEY }}"
-
+        run: terraform plan -out=tfplan 
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4
         with:
@@ -69,4 +68,4 @@ jobs:
         run: terraform init -backend-config="storage_account_name=${{ secrets.TF_STORAGE_ACCOUNT }}" -backend-config="access_key=${{ secrets.TF_STORAGE_ACCOUNT_KEY }}"
 
       - name: Terraform Apply
-        run: terraform apply -backend-config="storage_account_name=${{ secrets.TF_STORAGE_ACCOUNT }}" -backend-config="access_key=${{ secrets.TF_STORAGE_ACCOUNT_KEY }}" -auto-approve tfplan
+        run: terraform apply -auto-approve tfplan
