@@ -15,6 +15,22 @@
 </div>
 
 ---
+# GitHub CI/CD Repository Secrets
+
+| Secret Name | Suggested Description / Purpose |
+| :--- | :--- |
+| `ACR_LOGIN_SERVER` | Login server URL for Azure Container Registry (ACR). |
+| `ACR_LOGIN_TOKEN` | Authentication token or password for ACR. |
+| `ACR_LOGIN_USERNAME` | Username for ACR authentication. |
+| `AZURE_CLIENT_ID` | Client ID of the Azure Service Principal. |
+| `AZURE_CLIENT_SECRET` | Client Secret for the Azure Service Principal. |
+| `AZURE_SUBSCRIPTION_ID` | ID of the Azure Subscription being targeted. |
+| `AZURE_TENANT_ID` | ID of the Azure Active Directory Tenant. |
+| `TF_STORAGE_ACCOUNT` | Name of the Azure Storage Account used for Terraform state. |
+| `TF_STORAGE_ACCOUNT_KEY` | Access key for the Terraform state storage account. |
+| `VM_PASSWORD` | Password for the Virtual Machine. |
+| `VM_SSH_KEY_PATH` | Path to the SSH private key used for VM authentication. |
+| `VM_USERNAME` | Username for logging into the Virtual Machine. |
 
 > A **Next.js 16** storefront and admin experience talks to an **Express** API and **MySQL** (Sequelize). Authentication, catalog (including a public **`/categories`** index), checkout, orders, email flows, newsletters, careers, and affiliates live behind clear boundaries: **`frontend/`** for the UI, **`backend/`** for the API.
 
