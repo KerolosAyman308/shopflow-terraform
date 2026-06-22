@@ -33,6 +33,13 @@ resource "azurerm_mysql_flexible_server" "mysql_server" {
   }
 }
 
+resource "azurerm_mysql_flexible_server_configuration" "disable_secure_transport" {
+  name                = "require_secure_transport"
+  resource_group_name = var.resource_group.name
+  server_name         = azurerm_mysql_flexible_server.mysql_server.name
+  value               = "OFF"
+}
+
 resource "azurerm_mysql_flexible_database" "main_db" {
   name                = "shopflow_db"
   resource_group_name = var.resource_group.name
