@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        
+
       - uses: ./.github/actions/setup-terraform
 
       - name: Terraform Plan
@@ -52,13 +52,6 @@ jobs:
       run:
         working-directory: ./azure_terraform
     steps:
-      - name: Azure Login via OIDC
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
       - name: Checkout Code
         uses: actions/checkout@v4
 
@@ -86,13 +79,6 @@ jobs:
       run:
         working-directory: ./azure_terraform
     steps:
-      - name: Azure Login via OIDC
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
       - name: Checkout Code
         uses: actions/checkout@v4
 
