@@ -17,3 +17,8 @@ runs:
       run: terraform init -backend-config="storage_account_name=${{ env.TF_STORAGE_ACCOUNT }}" -backend-config="access_key=${{ env.TF_STORAGE_ACCOUNT_KEY }}"
       shell: bash
       working-directory: ./azure_terraform
+
+    - name: Terraform Validate
+      run: terraform validate
+      shell: bash
+      working-directory: ./azure_terraform

@@ -45,7 +45,7 @@ resource "azurerm_lb" "internal_lb" {
   frontend_ip_configuration {
     name = "internal-frontend-ip"
     //subnet_id            = var.config.other.private_subnet_id
-    public_ip_address_id = azurerm_public_ip.id
+    public_ip_address_id = azurerm_public_ip.lb_pip.id
   }
 }
 
