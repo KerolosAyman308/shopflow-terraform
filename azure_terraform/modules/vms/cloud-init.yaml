@@ -18,7 +18,8 @@ write_files:
       ACR_REGISTRY="${acr_login_server}"
       ACR_USERNAME="${acr_username}"
       ACR_PASSWORD="${acr_password}"
-      IMAGE_NAME="ecommerce-backend:latest"
+      BACKEND_IMAGE_NAME="ecommerce-backend:latest"
+      FRONTEND_IMAGE_NAME="ecommerce-frontend:latest"
 
       echo "Logging into Azure Container Registry..."
       # Use --password-stdin to prevent password warnings in logs
@@ -26,14 +27,16 @@ write_files:
 
       echo "Pulling Docker image..."
 
-      docker pull "$${ACR_REGISTRY}/$${IMAGE_NAME}"
-      cat << 'EOF' > /tmp/.env
-      PORT=3000
+      docker pull "$${ACR_REGISTRY}/$${BACKEND_IMAGE_NAME}"
+      docker pull "$${ACR_REGISTRY}/$${FRONTEND_IMAGE_NAME}"
+
+      cat << 'EOF' > /tmp/backend/.env
+      PORT=8000
       NODE_ENV=production
 
       # Public URLs (CORS + email templates)
-      BASE_URL=http://localhost:8080
-      FRONTEND_URL=http://localhost:3000
+      BASE_URL=http://${load_balancer_ip}:8000
+      FRONTEND_URL=http://${load_balancer_ip}:3000
 
       DB_NAME=${db_name}
       DB_USER=${db_user}
@@ -54,7 +57,7 @@ write_files:
       FACEBOOK_URL=
       TWITTER_URL=
       INSTAGRAM_URL=
-      LOGO_URL=http://localhost:8080/static/image/STRIKETECH-1.png
+      LOGO_URL=http://${load_balancer_ip}:8000/static/image/STRIKETECH-1.png
 
       SMTP_HOST=
       SMTP_PORT=
@@ -63,19 +66,22 @@ write_files:
       SMTP_FROM=
       EOF
 
-      docker run -d --name my-backend-app --env-file /tmp/.env -p 8000:3000 "$${ACR_REGISTRY}/$${IMAGE_NAME}"
+      cat << 'EOF' > /tmp/frontend/.env
+      NEXT_PUBLIC_API_URL=http://${load_balancer_ip}:8000
+      NEXT_PUBLIC_STORE_NAME=Our store
+      NEXT_PUBLIC_AFFILIATE_COMMISSION_PCT=15
+      EOF
+
+      docker run -d --name backend --env-file /tmp/backend/.env -p 8000:8000 "$${ACR_REGISTRY}/$${BACKEND_IMAGE_NAME}"
+      docker run -d --name frontend --env-file /tmp/frontend/.env -p 3000:3000 "$${ACR_REGISTRY}/$${FRONTEND_IMAGE_NAME}"
 
 runcmd:
-  # 1. Download and run the official Docker convenience installation script
   - curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
   - sh /tmp/get-docker.sh
 
-  # 2. Ensure Docker is enabled and running
   - systemctl enable docker
   - systemctl start docker
 
-  # 3. Execute our custom ACR pull script
   - /opt/pull-acr-image.sh
 
-  # 4. (Optional) Remove the script after execution to clean up credentials
   - rm /opt/pull-acr-image.sh

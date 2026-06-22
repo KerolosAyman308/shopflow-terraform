@@ -10,8 +10,11 @@ on:
             - opened
 
 jobs:
-    push:
+    push_backend:
         runs-on: "ubuntu-latest"
+        strategy:
+          matrix:
+            service: [backend, frontend]
         steps:
             - name: checkout code
               uses: actions/checkout@v4
@@ -30,6 +33,6 @@ jobs:
             - name: Build and push
               uses: docker/build-push-action@v5
               with:
-                context: backend/
+                context: ${{ matrix.service }}/
                 push: true 
-                tags: ${{ secrets.ACR_LOGIN_SERVER }}/ecommerce-backend:latest
+                tags: ${{ secrets.ACR_LOGIN_SERVER }}/ecommerce-${{ matrix.service }}:latest
