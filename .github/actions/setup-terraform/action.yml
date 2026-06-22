@@ -14,6 +14,6 @@ runs:
       uses: hashicorp/setup-terraform@v3
 
     - name: Terraform Init
-      run: terraform init -backend-config="storage_account_name=$TF_STORAGE_ACCOUNT" -backend-config="access_key=$TF_STORAGE_ACCOUNT_KEY"
+      run: terraform init -backend-config="storage_account_name=${{ env.TF_STORAGE_ACCOUNT }}" -backend-config="access_key=${{ env.TF_STORAGE_ACCOUNT_KEY }}"
       shell: bash
       working-directory: ./azure_terraform
