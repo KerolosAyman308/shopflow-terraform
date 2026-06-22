@@ -1,0 +1,8 @@
+.env
+*/keys
+*/terraform.tfvars
+*/.terraform.lock.hcl
+*/.terraform
+*/config.tfbackend
+*/terraform.tfstate
+*/terraform.tfstate.backup
