@@ -1,0 +1,15 @@
+name: "Setup and Init Terraform"
+description: "Checks out code, sets up TF, and initializes"
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+
+    - name: Terraform Init
+      run: terraform init -backend-config="storage_account_name=$TF_STORAGE_ACCOUNT" -backend-config="access_key=$TF_STORAGE_ACCOUNT_KEY"
+      shell: bash
+      working-directory: ./azure_terraform

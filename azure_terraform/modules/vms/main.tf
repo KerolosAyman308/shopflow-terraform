@@ -28,6 +28,14 @@ resource "azurerm_network_security_group" "backend_nsg" {
   }
 }
 
+resource "azurerm_public_ip" "lb_pip" {
+  name                = "lb-pip"
+  location            = var.resource_group.loc
+  resource_group_name = var.resource_group.name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+
 resource "azurerm_lb" "internal_lb" {
   name                = "backend-internal-lb"
   location            = var.resource_group.loc
@@ -35,8 +43,9 @@ resource "azurerm_lb" "internal_lb" {
   sku                 = "Standard"
 
   frontend_ip_configuration {
-    name      = "internal-frontend-ip"
-    subnet_id = var.config.other.private_subnet_id
+    name = "internal-frontend-ip"
+    //subnet_id            = var.config.other.private_subnet_id
+    public_ip_address_id = azurerm_public_ip.id
   }
 }
 
@@ -75,6 +84,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "backend_vmss" {
   instances           = 2
   admin_username      = var.config.username
   custom_data = base64encode(templatefile("${path.module}/cloud-init.yaml", {
+    load_balancer_ip = azurerm_public_ip.lb_pip.ip_address
     acr_login_server = var.config.acr.login_server
     acr_username     = var.config.acr.username
     acr_password     = var.config.acr.password
