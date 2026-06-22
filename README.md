@@ -457,5 +457,5 @@ Built on [Next.js](https://nextjs.org/), [Express](https://expressjs.com/), [Seq
 **StrikeTech**
 
 *Lasting first impressions come from clear docs, reliable defaults, and respectful collaboration.*
-
+--
 </div>
