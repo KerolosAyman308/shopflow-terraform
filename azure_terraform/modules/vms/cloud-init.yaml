@@ -29,8 +29,9 @@ write_files:
 
       docker pull "$${ACR_REGISTRY}/$${BACKEND_IMAGE_NAME}"
       docker pull "$${ACR_REGISTRY}/$${FRONTEND_IMAGE_NAME}"
-
-      cat << 'EOF' > /tmp/backend/.env
+      mkdir /tmp/backend
+      mkdir /tmp/frontend
+      cat << EOF > /tmp/backend/.env
       PORT=8000
       NODE_ENV=production
 
@@ -66,7 +67,7 @@ write_files:
       SMTP_FROM=
       EOF
 
-      cat << 'EOF' > /tmp/frontend/.env
+      cat << EOF > /tmp/frontend/.env
       NEXT_PUBLIC_API_URL=http://${load_balancer_ip}:8000
       NEXT_PUBLIC_STORE_NAME=Our store
       NEXT_PUBLIC_AFFILIATE_COMMISSION_PCT=15
@@ -83,5 +84,3 @@ runcmd:
   - systemctl start docker
 
   - /opt/pull-acr-image.sh
-
-  - rm /opt/pull-acr-image.sh
