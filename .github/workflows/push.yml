@@ -9,8 +9,8 @@ on:
             - synchronize
             - opened
         paths: 
-          - ./frontend
-          - ./backend
+        - 'frontend/**'
+        - 'backend/**'
 
 jobs:
     push_backend:
